@@ -1,0 +1,54 @@
+ROP Trigger if exists account_check; // example trigger to modify
+
+delimiter //
+CREATE TRIGGER addTeam
+BEFORE INSERT on employees
+	For each row 
+	BEGIN
+		IF NEW.team < 0 //when employee entered, update team
+			THEN
+				SET NEW.team =0;
+		ELSEIF NEW.team > 100 THEN
+			SET New.team = new.team + 10;
+		End if;
+	end;//
+delimiter ;
+//second trigger 
+delimiter //
+CREATE TRIGGER upDatePay
+BEFORE INSERT on payroll
+	For each row 
+	BEGIN
+		IF NEW.payment < 0 
+			THEN
+				SET NEW.payment =0; //when payed set payment to zero 
+		ELSEIF NEW.payment > 100 THEN
+			SET New.payment = new.payment + 10;
+		End if;
+	end;//
+delimiter ;
+//3rd trigger
+delimiter //
+CREATE TRIGGER projectAssignment
+BEFORE INSERT on project
+	For each row 
+	BEGIN
+		IF NEW.project < 0 //when in project is created, assign a team to it 
+			THEN
+				SET NEW.team =project;
+		ELSEIF NEW.team > 100 THEN
+			SET New.project = new.team + 10;
+		End if;
+	end;//
+delimiter ;
+
+
+
+//queries
+
+Select Address from Employees join Address from Clients;
+
+Select TeamName from Department join projectID from Team;
+Select CheckId from Payroll join blackid from payments;
+
+ 
